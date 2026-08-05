@@ -1,0 +1,33 @@
+%--
+\documentclass[UTF8]{ctexrep}
+
+%--
+\input{./preamble/packages.tex}
+\input{./preamble/macros.tex}
+
+%--
+\begin{document}
+
+%-- front matter
+\input{./paratext/front-matter.tex}
+
+%-- 前言
+\input{./maintext/preface.tex}
+
+%-- 目录
+\tableofcontents
+     
+%-- 正文
+
+%-- -- 前导部分
+\input{./maintext/part-preli.tex}
+
+%-- -- -- 计算模型
+\input{./maintext/model.tex}
+
+%-- 参考文献
+\bibliographystyle{plain}
+\bibliography{./bib/lada.bib}
+
+%--     
+ \end{document}
