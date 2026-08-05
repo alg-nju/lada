@@ -1,2 +1,71 @@
 %--
 \chapter{计算模型}
+
+%----------------------------------------
+\section{计算模型的引入}
+
+我们首先不严格地讨论算法的直观概念。
+
+算法是``the step-by-step procedures that computers use to solve problems"
+    \footnote{这一说法源自于Quanta Magazine的文章《Computer scientists establish the best way to traverse a graph》，
+    作者Ben Brubaker，链接：
+    https://www.quantamagazine.org/computer-scientists-establish-the-best-way-to-traverse-a-graph-20241025/。}
+    。
+
+我们可以借用“类比”（analog）来解释算法相关的概念
+    \footnote{这里参考了Erik Demaine教授在课堂上的讲授。课程信息：
+    MIT open courseware, Introduction to algorithms (6.006, fall 2011)。
+    链接：https://courses.csail.mit.edu/6.006/fall11/notes.shtml。
+    最后访问日期：2026.8.5。}
+    。
+假设我们了解一台计算机及其上运行的程序，
+%
+那么我们的“算法”，就是“计算机程序在数学世界中的类比”（mathematical analog of a computer program）。
+%
+我们描述算法所用的“伪码”，就是“计算机编程语言在数学世界中类比”（mathematical analog of a programming language）。
+这里所说的伪码是指面向算法描述的，结构化的自然语言，可以是中文、英文等。
+%
+我们的“计算模型”，就是“现实世界中的计算机在数学世界中的类比”（mathematical analog of a computer）。
+
+%--
+\begin{table}[htbp]
+    \centering
+    \caption{概念的对比}
+    \label{t:analog}
+    %--
+    \begin{tabular}{c|c}
+        \toprule
+        \textbf{数学世界的概念} & \textbf{计算机世界的概念} \\
+        \midrule
+        算法 & 程序 \\
+        伪码语言 & 编程语言 \\
+        计算模型 & 计算机 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+%
+%%--
+%\begin{table}[ht]
+%    \centering
+%    %
+%    \begin{tabular}{|>{\centering\arraybackslash}p{5cm}|>{\centering\arraybackslash}p{5cm}|}  % 两列都居中，有竖线
+%        \hline                  % 水平线
+%        数学世界的概念 & 计算机世界的概念 \\        
+%        \hline \hline                  % 水平线
+%        算法 & 计算机程序 \\ 
+%        \hline        
+%        伪码 & 编程语言 \\ 
+%        \hline        
+%        计算模型 & 计算机 \\ 
+%        \hline
+%    \end{tabular}
+%    %
+%\end{table}
+
+%----------------------------------------
+\section{抽象的算法设计}
+
+%----------------------------------------
+\section{抽象的算法分析}
