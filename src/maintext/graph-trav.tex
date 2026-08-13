@@ -1,0 +1,37 @@
+%--
+\chapter{图遍历}
+
+%----------------------------------------
+\section{图遍历的抽象框架}
+
+\pur
+
+\textbf{这是算法伪码排版的示例。未来会替换成正式的算法}。
+
+\bla
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\textsc{BinarySearch}}
+    \label{alg:binary-search}
+    \begin{algorithmic}[1]
+        \Require 有序数组 $A[1..n]$，目标值 $x$
+        \Ensure $x$ 在 $A$ 中的索引，若不存在则返回 $-1$
+        
+        \State $low \gets 1,\ high \gets n$
+        
+        \While{$low \leq high$}
+        \State $mid \gets \lfloor (low + high) / 2 \rfloor$
+        
+        \If{$A[mid] = x$}
+        \State \Return $mid$
+        \ElsIf{$A[mid] < x$}
+        \State $low \gets mid + 1$
+        \Else
+        \State $high \gets mid - 1$
+        \EndIf
+        \EndWhile
+        
+        \State \Return $-1$
+    \end{algorithmic}
+\end{algorithm}
