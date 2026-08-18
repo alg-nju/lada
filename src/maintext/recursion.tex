@@ -27,7 +27,7 @@ $T(n)$的渐近增长率为：
 %--
 \begin{proof}
 
-根据图\ref{F:Recursion-Tree}，我们有：
+根据图\ref{f:recursion-tree}，我们有：
 %--
 \begin{align} \label{eqn:T(n)-2}
     T(n) &= \underbrace{\Theta(n^{\log_b a})}_{\text{叶节点层代价}} + \underbrace{g(n)}_{\text{所有非叶结点层代价}}  
@@ -95,7 +95,9 @@ $T(n)$的渐近增长率为：
     &= O(f(n))
 \end{align*}
 
-\noindent 由此，我们证明了$T(n) = \Theta(f(n))$。
+\noindent 由此，我们证明了$T(n) = \Theta(f(n))$
+    \footnote{证明过程参考了《算法导论》的第三版和第四版的相关章节。图示基于陈道蓄老师的授课胶片修改。}
+    。
 
 \end{proof}
 
@@ -104,5 +106,5 @@ $T(n)$的渐近增长率为：
     \center
     \includegraphics[width=0.75\columnwidth]{./figs/recursion/recursion-tree.png}
     \caption{$T(n)$的递归树展开}
-    \label{F:Recursion-Tree}
+    \label{f:recursion-tree}
 \end{figure}

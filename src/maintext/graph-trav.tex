@@ -4,34 +4,41 @@
 %----------------------------------------
 \section{图遍历的抽象框架}
 
-\pur
-
-\textbf{这是算法伪码排版的示例。未来会替换成正式的算法}。
-
-\bla
+\alg{WhateverFirstSearch}（WFS），算法\ref{alg:WFS}。
 
 %--
 \begin{algorithm}[htbp]
-    \caption{\textsc{BinarySearch}}
-    \label{alg:binary-search}
-    \begin{algorithmic}[1]
-        \Require 有序数组 $A[1..n]$，目标值 $x$
-        \Ensure $x$ 在 $A$ 中的索引，若不存在则返回 $-1$
-        
-        \State $low \gets 1,\ high \gets n$
-        
-        \While{$low \leq high$}
-        \State $mid \gets \lfloor (low + high) / 2 \rfloor$
-        
-        \If{$A[mid] = x$}
-        \State \Return $mid$
-        \ElsIf{$A[mid] < x$}
-        \State $low \gets mid + 1$
-        \Else
-        \State $high \gets mid - 1$
-        \EndIf
-        \EndWhile
-        
-        \State \Return $-1$
-    \end{algorithmic}
+\caption{\alg{WhateverFirstSearch}($s$)}
+\label{alg:WFS}
+\begin{algorithmic}[1]
+\State put $s$ into the bag $B$
+\While{$B$ is not empty}
+    \State take $v$ from $B$
+    \If{$v$ is unmarked}
+        \State mark $v$
+        \ForAll{edge $vw$}
+            \State put $w$ into $B$
+        \EndFor
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+WFS的外层调用算法（wrapper），算法\ref{alg:WFS-wrapper}。
+
+%--
+\begin{algorithm}[htbp]
+\caption{\alg{WFSWrapper}($G$)}
+\label{alg:WFS-wrapper}
+\begin{algorithmic}[1]
+\ForAll{vertices $v$}
+    unmark $v$
+\EndFor
+\ForAll{vertices $v$}
+    \If{$v$ is unmarked}
+        WFS($v$)
+    \EndIf
+\EndFor
+\end{algorithmic}
 \end{algorithm}
