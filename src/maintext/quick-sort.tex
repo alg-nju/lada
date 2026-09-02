@@ -1,0 +1,28 @@
+%--
+\chapter{快速排序}
+
+%----------------------------------------
+\section{快速排序}
+
+%--------------------
+\subsection{原地地划分的实现} 
+
+在做\alg{Partition}的时候，开辟一个$O(n)$的辅助空间，划分很容易实现。
+一个自然的想法是，能否将划分改为\ul{原地}（in-place）的。
+
+原地划分的做法是，用两个指针$i$和$j$，将元素划分为四个部分，如图\ref{F:Partition}所示。
+划分算法维护的不变式是$i$和$j$界定了小于部分和大于部分。
+
+算法当前待处理的元素是$A[j]$。其他情况简单，唯一需要说明的是当$A[j]$纳入一个小于pivot的元素时，不变式被违反。
+
+此时的做法很巧妙：让$i$指针右移一位，它也违反了不变式。
+让$i$、$j$位置的元素互换，则两个违反都消失，整个数组恢复保持不变式。
+
+
+%--
+\begin{figure}[htbp]
+    \center
+    \includegraphics[width=0.8\columnwidth]{./figs/quick-sort/partition.png}
+    \caption{原地的元素划分}
+    \label{F:Partition}
+\end{figure}
