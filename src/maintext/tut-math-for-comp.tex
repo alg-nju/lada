@@ -1,0 +1,93 @@
+%--
+\chapter{算法视角下的数学知识 (T1)}
+
+%--
+\begin{flushright}
+\parbox{0.7\columnwidth}{\flushright \textit{\textsf{
+    If you find the mathematics difficult, skip those early parts. 
+    Later sections will be understandable 
+    provided you are willing to forgo the deep insights mathematics 
+    gives into the weaknesses of our current beliefs. 
+    General results are always stated in words, 
+    so the content will still be there but in a slightly diluted form.\\}}
+\parbox{0.7\columnwidth}{\flushright \textsf{\textsf{\textemdash} 
+    Richard W. Hamming \cite{Hamming05}}}
+}
+\end{flushright}
+
+
+%----------------------------------------
+\section*{授课提纲}
+
+%----------
+\subsubsection{I - 公理化视角}
+
+\nid 从直觉开始构造
+%--
+\begin{itemize}
+    \item 数学归纳法的基础：良序原理
+    \item 自然数集合的公理化构造
+    \item 数域的公理化构造：$N \Rightarrow Z \Rightarrow Q \Rightarrow R \Rightarrow C$
+\end{itemize}
+
+\nid 数学归纳法证明算法正确性
+%--
+\begin{itemize}
+    \item 归纳法辨析：“所有马同色”谬误
+    \item 归纳法应用：\alg{Euclid}，\alg{BubbleSort}，\alg{Prim}
+\end{itemize}
+
+\nid 认识和理解\ul{不变式}（invariant）的概念
+%--
+\begin{itemize}
+    \item 归纳法中的“变”与“不变”
+    \item 更大范围地应用不变式的概念
+\end{itemize}
+
+%----------
+\subsubsection{II - 数学的概念，算法的视角}
+
+\nid 基本数学概念
+%--
+\begin{itemize}
+    \item 函数：$f(n)$
+    \item 取整：$\floor{x}, \ceil{x}$
+    \item 对数：$\log_a b$
+    \item 阶乘：$n!$
+\end{itemize}
+
+\nid 基本级数
+%--
+\begin{itemize}
+    \item 多项式级数：算术级数，平方和，任意$k$次方和（的渐近增长率）
+    \item 几何级数：一般形式，2和$\frac{1}{2}$的特例，渐进增长率的速判
+    \item 算术几何级数：“错项相减”法
+    \item 调和级数
+    \item 斐波那契数列
+\end{itemize}
+
+\nid 面向平均情况时间复杂度分析的期望值求解
+%--
+\begin{itemize}
+    \item 指标随机变量
+    \item 期望的线性性（linearality）
+    \item 示例：排序算法平均情况时间复杂度的数学描述
+\end{itemize}
+
+%----------
+\subsubsection{III - BF范式：分析驱动设计改进}
+
+\nid BF范式（paradigm）
+%--
+\begin{itemize}
+    \item BF是一个“相对性”的概念
+    \item 基本模式：分析发现不足 $\Rightarrow$ 大O度量不足$\Rightarrow$不足推动改进
+\end{itemize}
+
+
+\nid 分析驱动改进
+%--
+\begin{itemize}
+    \item “名人”问题；不变式：一次比较，确定淘汰一个
+    \item 频繁项问题：$k=2$的特例；不变式：$|f| > |\neg f|$
+\end{itemize}
