@@ -1,5 +1,90 @@
 %--
-\chapter{快速排序}
+\chapter{快速排序 (L4)}
+
+
+%----------------------------------------
+\section*{授课提纲}
+
+%----------
+\subsubsection{I - BF排序}
+
+\nid 最朴素的\alg{SelectionSort}和\alg{BubbleSort}
+%--
+\begin{itemize}
+    \item $W(n)$：$\choo{n}{2}$的必然性
+    \item $A(n) = W(n)$
+\end{itemize}
+    
+\nid \alg{InsertionSort}的改进
+%--
+\begin{itemize}
+    \item 局部有序性的利用
+    \item $W(n)$：不变
+    \item $A(n)$：定量地降了一半
+\end{itemize}
+    
+\nid 蛮力排序的不足
+%--
+\begin{itemize}
+    \item inversion的概念
+    \item inversion的数量：最多、平均
+    \item 蛮力算法：消除inversion速度的不足
+\end{itemize}
+
+%----------
+\subsubsection{II - 快速排序}
+
+\nid 快速排序的设计原理
+%--
+\begin{itemize}
+    \item 如何一次比较，消除更多的inversion
+    \item 分治策略的典型应用：难分易合
+\end{itemize}
+
+\nid 快速排序的时间复杂度
+\begin{itemize}
+    \item $W(n)$：最不平衡的划分
+
+    \item $A(n)$：列递归，解递归
+    \begin{itemize}
+        \item smart guess，guess \& prove
+        \item 直接求解：错项相减
+    \end{itemize}
+
+    \item $A(n)$：指标随机变量、变量的linearality \footnote{将在tutorial中专题讲解。}
+\end{itemize}
+
+%----------
+\subsubsection{III - 空间复杂度}
+
+\nid 空间复杂度的分档
+%--
+\begin{itemize}
+    \item $O(1)$的含义：原地（in-place）排序
+    \item $O(n)$的含义
+\end{itemize}
+
+\nid 蛮力排序、堆排序\footnote{将在相应课程中针对性讲解。}
+%--
+\begin{itemize}
+    \item 显然的$O(1)$空间
+\end{itemize}
+
+\nid 快速排序
+%--
+\begin{itemize}
+    \item $O(n)$空间的朴素实现
+    \item $O(1)$空间的改进：四个部分、一个不变式
+\end{itemize}
+
+\nid 归并排序：多次的反转 \footnote{将在相应课程中针对性讲解。}
+%--
+\begin{itemize}
+    \item 只能$O(n)$
+    \item 可以$O(1)$
+    \item 还是$O(n)$
+\end{itemize}
+
 
 %----------------------------------------
 \section{快速排序}
