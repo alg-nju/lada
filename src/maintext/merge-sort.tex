@@ -6,10 +6,150 @@
 \section*{授课提纲}
 
 %----------
-\subsubsection{I - }
+\subsubsection{I - 归并排序}
 
-\nid 
+\nid \alg{MergeSort}的设计辨析
 %--
 \begin{itemize}
-    \item 
+    \item 基本设计与分析
+    \item 合并的最坏情况时间复杂度的问题（\S\ref{subsec:worst-merge}）
 \end{itemize}
+
+\nid 整体性地考虑空间复杂度问题
+%--
+\begin{itemize}
+    \item 从蛮力排序和堆排序，到快速排序，到归并排序
+    \item 从$O(n)$到$O(1)$，再到$O(n)$
+\end{itemize}
+
+
+%----------
+\subsubsection{II - 比较排序的下界}
+
+\nid 下界问题
+%--
+\begin{itemize}
+    \item 概念辨析：最大的最小值；最小的最大值
+    \item 下界的定义：最坏情况、平均情况
+\end{itemize}
+
+\nid 一个算法族的抽象建模
+%--
+\begin{itemize}
+    \item 比较排序$\rightleftharpoons$决策树，对应表（\S\ref{sec:sorting-lb}） 
+\end{itemize}
+
+\nid 比较排序的下界
+%--
+\begin{itemize}
+    \item 最坏情况：二叉树的$h$和$L$的关系
+    \item 平均情况：越平衡、EPL越小
+\end{itemize}
+
+%----------------------------------------
+\section{归并排序的设计}
+
+%--------------------
+\subsection{归并过程的空间复杂度}
+
+%----------
+\subsubsection{随机存储（数组） vs. 顺序存储（链表）}
+
+数组支持\ul{随机访问}（random access），即访问任意$A[i]$都是$O(1)$时间。但是数组是一段连续的存储空间，必须预先分配指定的大小。
+数组中插入元素时，需要涉及多个元素的挪动。
+
+反之，链表只支持\ul{顺序访问}（sequential access），访问链表中第$k$个元素的代价为$O(k)$时间。
+但是链表支持更灵活的调整，插入、删除元素都是$O(1)$时间。
+链表可以在使用时，即时分配。
+
+%----------
+\subsubsection{$O(n)$的空间代价}
+
+对照分析\alg{Merge}和\alg{Partition}算法，我们发现由于被\textsc{Merge}的数组是有序的，所以他们无法随意交换元素位置，因而无法像\textsc{Partition}那样，简单地改成原地算法。这与\S\ref{subsec:in-place-part}的设计形成鲜明对比。
+
+%----------
+\subsubsection{一种将空间代价降为$O(1)$的“改进”}
+
+此时，一个看似合理的改进是：原地\alg{Merge}，数组被分为左右两半，分别记为$A$和$B$。
+当$B$头部的元素$b_1$更小时，我们可以用大约$\frac{n}{2}$次\alg{Swap}，将$b_1$向左挪到合适的位置。
+通过多次的\textsc{Swap}，我们实现了原地的\alg{Merge}。
+由于我们是基于比较的排序，上述的\alg{Swap}操作是完全“免费”的，所以改进后的\alg{Merge}算法，时间复杂度不变，空间复杂度变为$O(1)$。
+
+这一分析结论过程的问题，在于忽视了我们对critical operation的要求。comparison之所以能够成为critical operation，一个必要的前提是，其他non-comparison的辅助操作的个数，必须跟comparison操作的个数满足线性关系。由此条件，我们才可以（在big-oh的意义下）仅计数 comparison 操作。
+
+上述做法，1次comparison，要辅以$O(n)$次\alg{Swap}操作，那它已经不再是comparison-based sorting，我们的分析就无效了。如果坚持这样的“改进”，那我们的建模和分析则应该同时统计 \alg{Compare} 和 \alg{Swap} 操作的代价。分析结果表明这样的改进就不再有效了。
+
+%----------
+\subsubsection{真的改进，却不是最广泛使用}
+
+对于链表，归并是可以在$O(1)$空间完成的。一个比较著名的例子是Linux kernel中对于linked list的归并排序 \cite{url-list-sort26}。
+
+在实际使用中，归并排序算法，主要面向顺序存储上的数据排序。在随机存储上，一般快速排序、堆排序具有更好的性能。虽然上述$O(1)$空间的改进可以实现，但是实际采用的，更多还是需要$O(n)$空间的简单实现 \cite{wiki-merge-sort26}。
+
+
+%----------------------------------------
+\section{归并排序的分析}
+
+%--------------------
+\subsection{最坏情况下的归并代价} \label{subsec:worst-merge}
+
+%----------
+\subsubsection{归并的最坏情况所对应的输入}
+
+假设我们将原始数组分成左右两部分，分别为$A[1..\frac{n}{2}]$和$B[1..\frac{n}{2}]$，现在我们要将他们合并到空数组$C$中。
+
+对于\alg{Merge}过程而言，最坏情况输入是$A$和$B$的元素在大小关系下是交叉的，即：
+%--
+\begin{align}
+    b_1<a_1<b_2<a_2<\cdots < b_{n/2} < a_{n/2} \label{Eq:Merge-Worst-Case}
+\end{align}
+
+
+反过来说，\textsc{Merge}的最好情况是，有尽量多的元素无需比较，直接完成合并，即：$a_1<a_2<\cdots < a_{n/2} < b_1 < b_2 < \cdots < b_{n/2}$。此时，所有$A$的元素通过比较，都挪到$C$中。当$B$中的元素面对空的$A$数组时，无需任何比较，我们直接将整个$B$挪到$C$中。
+
+%----------
+\subsubsection{一种似乎也是最坏的输入}
+
+此时，一个潜在的疑问是，公式（\ref{Eq:Merge-Worst-Case}）的要求是充分的，但是它否有必要。只要我保证$A$和$B$都一直不空（直至最后才空），是否就可以？
+
+假设$A$和$B$的元素满足$a_1<a_2<\cdots < a_{n/2-1} < b_1<b_2<\cdots <b_{n/2}<a_{n/2}$。这一构造的原理是：$A$数组在比较中，差点就空了，只剩一个元素$a_{n/2}$特别大，不是也能保证最坏情况么？因为$B$的元素还是只能通过比较，逐个挪到$C$中。
+
+下面的例子说明，公式（\ref{Eq:Merge-Worst-Case}）的要求是必要的，因为面对有序的数组，我们可以玩出一些特别的“花样”。
+
+%----------
+\subsubsection{这样的输入做不到最坏}
+
+此时，$a_{n/2}$这一个元素，面对一个有序的数组$B[1..n/2]$，我们可以用折半查找找到$a_{n/2}$应该出现的位置，然后无需额外比较，直接把$B$和$a_{n/2}$都挪到$C$中。
+
+此时，基于折半查找，实际的比较次数大约是$\frac{n}{2}+\log \frac{n}{2}$。所以这一情况，由于我们可以采用折半查找，所以它并未将\textsc{Merge}逼迫到最坏情况。
+
+
+
+%----------------------------------------
+\section{基于比较的排序算法的下界} \label{sec:sorting-lb}
+
+分析比较排序算法的下界，基本的技术手段是，
+    将比较排序算法的运作，和决策树（decision tree）对应起来。
+这一对应关系，如表\ref{tab:decision-tree}所示。
+
+%--
+\begin{table}[htbp]
+    \centering
+    \caption{决策树与比较排序算法的对应关系}
+    \label{tab:decision-tree}
+    % \tabcolsep 默认是 6pt，这里改成了 15pt。建议优先尝试12pt–18pt之间的数值。
+    % 它控制的是列文字两侧留白之和（即第一列左側、两列之间、第二列右侧），数值调大即可更宽松。
+    \setlength{\tabcolsep}{15pt} 
+    \begin{tabular}{l|l}
+        \toprule
+        Decision Tree & Algorithm \\
+        \midrule
+        internal node       & binary decision (comparison) \\
+        leaf                & found answer \\
+        root-to-leaf path   & algorithm execution \\
+        path length         & running time \\
+        height of the tree  & worst-case running time \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+

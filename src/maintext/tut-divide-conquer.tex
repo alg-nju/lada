@@ -9,3 +9,41 @@
 \begin{itemize}
     \item 分治
 \end{itemize}
+
+
+
+
+
+%----------------------------------------
+\section{归并分治}
+
+\nid 归并排序使用分治策略的模式，具有通用性，应用场合不仅限于排序：
+%--
+\begin{itemize}
+    \item 最大和子串。
+    \item Inversion计数。
+    \item Cloest pair（cf. \S\ref{subsec:closest-pair}）。
+    \item Maxima。
+    \item Frequent items。
+    \item Integer multiplication。
+    \item Matrix multiplication。
+\end{itemize}
+
+%----------------------------------------
+\subsection{Closest pair问题的补充解释} \label{subsec:closest-pair}
+
+我们可以保守地估计，当前检查的点$q_i$上下所有跟它距离可能更近的点，
+也就是当前检查的点$q_i$在一个$4\times 4$的网格中，最多需要比较它周边15个点 \cite[\S 5.4]{Kleinberg06}。
+
+大家对于这一更保守的估计反而有点疑惑，就是它为什么考虑了很多显然可以约减的情况。
+针对这一情况，我们改用下面更细致一点的估计。
+$q_i$只需要考虑它下面的点，连$q_i$自己，一共8个格子，
+所以$q_i$至多需要考虑7个点。
+
+%--
+\begin{figure}[ht]
+    \center
+    \includegraphics[width=0.3\columnwidth]{./figs/merge-sort/closest-pair.png}
+    \caption{Closest pair问题}
+    \label{F:Closest-Pair}
+\end{figure}
