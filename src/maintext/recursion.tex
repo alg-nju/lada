@@ -50,7 +50,7 @@ $T(n)$的渐近增长率为：
 %--
 \begin{proof}
 
-根据图\ref{f:recursion-tree}，我们有：
+根据图\ref{fig:recursion-tree}，我们有：
 %--
 \begin{align} \label{eqn:T(n)-2}
     T(n) &= \underbrace{\Theta(n^{\log_b a})}_{\text{叶节点层代价}} + \underbrace{g(n)}_{\text{所有非叶结点层代价}}  
@@ -129,5 +129,5 @@ $T(n)$的渐近增长率为：
     \center
     \includegraphics[width=0.75\columnwidth]{./figs/recursion/recursion-tree.png}
     \caption{$T(n)$的递归树展开}
-    \label{f:recursion-tree}
+    \label{fig:recursion-tree}
 \end{figure}

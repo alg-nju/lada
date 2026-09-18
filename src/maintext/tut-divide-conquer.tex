@@ -4,33 +4,38 @@
 %----------------------------------------
 \section*{授课提纲}
 
-\nid 分治
+
+%----------
+%\subsubsection{I - 排序}
+
+\nid 深入理解排序
 %--
 \begin{itemize}
-    \item 分治
+    \item 冒泡排序的改进
+    \item 快速排序的平均情况时间复杂度：基于指标随机变量的分析
+    \item 堆结构背后的深意：前$k$大元素；$\sum h \leq n-1$
 \end{itemize}
 
 
+\nid 从排序泛化到分治
+%--
+\begin{itemize}
+    \item inversion计数问题
+    \item 频繁项问题（族）
+    \item maxima问题
+    \item 最近点对问题
+    \item 任意精度整数相乘问题；矩阵相乘问题
+\end{itemize}
 
+%----------
+%\subsubsection{II - 分治}
 
 
 %----------------------------------------
 \section{归并分治}
 
-\nid 归并排序使用分治策略的模式，具有通用性，应用场合不仅限于排序：
-%--
-\begin{itemize}
-    \item 最大和子串。
-    \item Inversion计数。
-    \item Cloest pair（cf. \S\ref{subsec:closest-pair}）。
-    \item Maxima。
-    \item Frequent items。
-    \item Integer multiplication。
-    \item Matrix multiplication。
-\end{itemize}
-
 %----------------------------------------
-\subsection{Closest pair问题的补充解释} \label{subsec:closest-pair}
+\subsection{最近点对问题} \label{subsec:closest-pair}
 
 我们可以保守地估计，当前检查的点$q_i$上下所有跟它距离可能更近的点，
 也就是当前检查的点$q_i$在一个$4\times 4$的网格中，最多需要比较它周边15个点 \cite[\S 5.4]{Kleinberg06}。
@@ -44,6 +49,57 @@ $q_i$只需要考虑它下面的点，连$q_i$自己，一共8个格子，
 \begin{figure}[ht]
     \center
     \includegraphics[width=0.3\columnwidth]{./figs/merge-sort/closest-pair.png}
-    \caption{Closest pair问题}
-    \label{F:Closest-Pair}
+    \caption{最近点对问题}
+    \label{f:closest-pair}
 \end{figure}
+
+
+%----------------------------------------
+\section*{章节注释}
+
+%----------
+\subsubsection{“我心目中的英雄”}
+
+\alg{Karatsuba}算法我讲了很多年了，很晚才知道它的名字和背后的“科学轶事”\cite{wiki-Karatsuba}。
+从维基百科上摘录在下面，供大家参考。
+我想这则轶事完全可以入选《Heros in My Heart》 
+    \footnote{《Heros in My Heart》是我学生时代读的一系列BBS文章的合集，对我影响很大。文章的前言转录如下，全文大家可以去网上搜索。
+    “在北大混了四年，一事无成。
+    在未名上 bbs 也呆了快一年了，制造 了几千篇的垃圾。
+    要毕业的人想法总是奇怪的，譬如说竟然真的要正经的写几篇文章了。
+    最初写成这些东西的时候，我发给了几个朋 友，一个学数学的师弟说他很感动，一个非数学系的mm说她后悔当初没有选数学系，无论怎样，他们能这样子讲，我很感动，这是 发自内心的那种。
+    现在的打算是每天贴2-3个故事，一直到欧毕业 那天。
+    很多事情难免有些 too old，这个我也没有办法，激动人心的事情毕竟只有那么多。
+    不多说了，真心的希望大家会喜欢，哪怕只有一点点的喜欢。
+    这些文字偶给了一个名字，叫做 我心目中的英雄（Heroes in My Heart）。”}
+续篇。
+
+\medskip
+{\itshape
+    1960年，科尔莫戈罗夫在莫斯科大学组织了一个关于控制论中数学问题的研讨会，
+        在会上他提出了$\Omega(n^2)$猜想以及计算复杂性的其他一些问题。
+    不到一周，当时还是23岁学生的卡拉楚巴便找到了一种算法，
+        仅用$O(n^{\log _{2}3})$次初等运算即可完成两个 n 位数相乘，从而推翻了该猜想。
+    
+    科尔莫戈罗夫对这一发现感到非常兴奋。
+    他在研讨会的下一次会议上通报了这一成果，随后研讨会便宣告结束。
+    科尔莫戈罗夫在世界各地的会议上就卡拉楚巴的成果作了一系列报告（例如见《1962年国际数学家大会论文集》第351–356页，
+        以及《1962年斯德哥尔摩国际数学家大会上的6场演讲》），
+        并于1962年在苏联科学院院报上发表了这一方法。
+    该文由科尔莫戈罗夫撰写，其中包含关于乘法的两项成果——卡拉楚巴的算法和尤里·奥夫曼的另一项独立成果，
+        文章署名"A. Karatsuba and Yu. Ofman"。
+    而卡拉楚巴直到收到出版方寄来的抽印本时，才知道有这篇文章。
+}
+
+
+%{\sffamily
+%    ``In 1960, Kolmogorov organized a seminar on mathematical problems in cybernetics at the Moscow State University, where he stated the $\Omega(n^2)$ conjecture and other problems in the complexity of computation. 
+%    Within a week, Karatsuba, then a 23-year-old student, found an algorithm that multiplies two n-digit numbers in $O(n^{\log _{2}3})$ elementary steps, thus disproving the conjecture.
+%    
+%    Kolmogorov was very excited about the discovery.
+%    He communicated it at the next meeting of the seminar, which was then terminated. 
+%    Kolmogorov gave some lectures on the Karatsuba result at conferences all over the world (see, for example, ``Proceedings of the International Congress of Mathematicians 1962", pp. 351–356, and also ``6 Lectures delivered at the International Congress of Mathematicians in Stockholm, 1962") and published the method in 1962, in the Proceedings of the USSR Academy of Sciences. 
+%    The article had been written by Kolmogorov and contained two results on multiplication, Karatsuba's algorithm and a separate result by Yuri Ofman.
+%    It listed ``A. Karatsuba and Yu. Ofman" as the authors. 
+%    Karatsuba only became aware of the paper when he received the reprints from the publisher."
+%}
