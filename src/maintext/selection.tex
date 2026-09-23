@@ -1,9 +1,58 @@
 %--
 \chapter{线性时间选择 (L7, L8)}
 
+%----------------------------------------
+\section*{授课提纲}
+
+%----------
+\subsubsection{I - 选择算法}
+
+\nid 选择问题的特例
+%--
+\begin{itemize}
+    \item \alg{SelMax}
+    \item \alg{SelMaxMin}
+    \item \alg{SelSecondMax}
+\end{itemize}
+
+\nid 期望线性时间选择\alg{SelELin}
+%--
+\begin{itemize}
+    \item 脱胎于\alg{QuickSortPartition}的选择算法
+    \item 时间复杂度：smart guess；严格分析$\,^\bigstar$（两种不同的方法）
+\end{itemize}
+
+\nid 最坏线性时间选择\alg{SelWLin}
+%--
+\begin{itemize}
+    \item 设计原理：最坏情况下平衡性的保持
+    \item 时间复杂度：guess and prove；基于递归树，笨展开并统计
+    \item 分组大小为5，背后的深意（\S\ref{sec:group-size}）
+    \item 选择问题的泛化：带权重的中位数选择问题
+\end{itemize}
+
+
+%----------
+\subsubsection{II - 选择下界}
+
+\nid 对手论证（adversary argument）
+%--
+\begin{itemize}
+    \item 基本原理
+    \item 基本形式
+    \item 示例——选择唯一不同的球
+\end{itemize}
+
+\nid 选择问题的下界
+%--
+\begin{itemize}
+    \item 选最大
+    \item 选次大
+    \item 选中位数（$n$为奇数的部分结果）
+\end{itemize}
 
 %----------------------------------------
-\section{分组大小背后的微妙权衡}
+\section{分组大小背后的微妙权衡} \label{sec:group-size}
 
 我们将期望线性时间的选择算法记为\alg{SelElin}，
     将最坏线性时间的算法记为\alg{SelWlin}。
