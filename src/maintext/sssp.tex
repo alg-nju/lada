@@ -1,0 +1,507 @@
+%--
+\chapter{给定源点的最短路径}
+
+
+%----------------------------------------
+\section*{授课提纲}
+
+\nid 问题的定义：
+%--
+\begin{itemize}
+    \item Path，Shortest Path (SP)。
+    \item Single-source: SSSP。
+    \item All-pair: APSP。
+\end{itemize}
+
+\nid SSSP：
+%--
+\begin{itemize}
+    \item 无权图：BFS。
+    \item DAG：DFS（DP）。
+    \item 非负权图：\textsc{Dijkstra}（负权图其实也行）。
+    \item 负权图：\textsc{Bellman-Ford}（能检测负环）（\S \ref{sec:bellman-ford}）。
+\end{itemize}
+
+
+
+
+\section{SSSP问题}
+
+
+%----------------------------------------
+\subsection{关于负权边的subtleties}
+
+初看\ul{路径}和\ul{最短路径}的概念是直觉的、简单的。但是边是否有向、路径是否是简单路径、图中是否有负权边或者负权环，这些因素都会对这一表面简单的问题产生非常微妙的影响。具体而言：
+
+%--
+\begin{itemize}[leftmargin=1em]
+    \item 当所有边权非负时，我们主要讲解有向图。但是有向图算法，稍加改动即可用于无向图。
+    \item 当有负权边时，
+    %--
+    \begin{itemize}
+        \item \textit{我们不考虑无向图}。对于无向图，如果图中有负权边，问题会变得非常微妙。例如，一条负权无向边，如果简单替换为一对相向的有向边，则会引入一个负权环。含有负权边的无向最短路径的子路径不一定是最短路径。因此，从单个源顶点出发的所有无向最短路径的集合可能并不构成一棵树，即使最短路径是唯一的。我们不讨论含有负权边的无向图上的最短路径问题。
+        \item \textit{我们只考虑有向图}。
+        %--
+        \begin{itemize}
+            \item 当有负权边时，如果有负权环，则SP问题不再是well-defined的。我们的核心问题变成了甄别出负权环。
+            \item 当有负权边时，如果没有负权环，我们可以考虑SP问题。
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+
+%----------------------------------------
+\section{Bellman-Ford算法} \label{sec:bellman-ford}
+
+%--------------------
+\subsection{Ford的generic框架}
+
+首先要做初始化。一方面，将源点$s$的$dist(s)$赋值为0，其它点$u$的$dist(u)$赋值为无穷。
+另一方面，源点$s$的$pred(s)$赋值为\textsc{Null}，并且根据定义，它一直为\textsc{Null}。
+其它点$u$的$pred(u)$初始化为\textsc{Null}。如果$s$到$u$存在最路径，则$pred(u)$将被赋值为最短路径上指向$u$的点（$u$前面的那个点）。
+初始化过程如过程\textsc{InitSSSP($s$)}所示。%算法\ref{A:Init-SSSP}所示。
+
+找到更短路径的关键，在于发现所谓紧（\texttt{tense}）的边。我们定义边$u\rightarrow v$为紧的，如果$dist(u)+w(u\rightarrow v) < dist(v)$。
+对于一条紧的边，我们可以\textsc{Relax}它，即更新最短路径值$dist()$，以及最短路径上的前一个点$pred()$，如过程\textsc{Relax($u\rightarrow v$)}所示。%算法\ref{A:Relax}所示。
+
+有了紧的概念和\textsc{Relax}操作，我们可以得到朴素的蛮力SSSP算法，如算法\ref{A:Ford}所示。这一框架是Ford 提出的。
+
+
+
+
+
+%--
+%\begin{algorithm}
+%    \begin{algorithmic}[1]
+%        \Procedure{InitSSSP}{$s$}
+%        \State aaa
+%    \end{algorithmic}
+%\end{algorithm}
+
+%--
+\begin{algorithm}
+    \begin{algorithmic}[1]
+        \Procedure{InitSSSP}{$s$}
+            \State $dist(s) := 0$
+            \State $pred(s) := \text{\texttt{NULL}}$
+            \ForAll{vertices $v\neq s$}
+                \State $dist(v) := \infty$
+                \State $pred(v) := \text{\texttt{NULL}}$
+            \EndFor
+        
+        
+%         \ForAll{vertices $v$}
+%        unmark $v$ \Comment{遍历之前，初始化每个点}
+%        \EndFor
+        
+        %    $dist(s) := 0$ \;
+        %    $pred(s) := \text{\textsc{Null}}$ \;
+        %    
+        %    \ForAll{vertices $v\neq s$}{
+            %        $dist(v) := \infty$ \;
+            %        $pred(v) := \text{\textsc{Null}}$ \;
+            %    }
+        
+        
+%    \State $z \gets$ 新建结点，存储 $x$
+%    \State $y \gets \textsc{Nil}$，$r \gets T.root$
+%    \While{$r \neq \textsc{Nil}$}
+%    \State $y \gets r$
+%    \If{$x < r.key$}
+%    \State $r \gets r.left$
+%    \Else
+%    \State $r \gets r.right$
+%    \EndIf
+%    \EndWhile
+%    \State \Return $z$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+%--
+\begin{algorithm}
+    \begin{algorithmic}[1]
+        \Procedure{Relax}{$u\rightarrow v$}
+            \State $dist(v) := dist(u)+w(u\rightarrow v)$
+            \State $pred(v) := u$
+        
+        %         \ForAll{vertices $v$}
+        %        unmark $v$ \Comment{遍历之前，初始化每个点}
+        %        \EndFor
+        
+        %    $dist(s) := 0$ \;
+        %    $pred(s) := \text{\textsc{Null}}$ \;
+        %    
+        %    \ForAll{vertices $v\neq s$}{
+            %        $dist(v) := \infty$ \;
+            %        $pred(v) := \text{\textsc{Null}}$ \;
+            %    }
+        
+        
+        %    \State $z \gets$ 新建结点，存储 $x$
+        %    \State $y \gets \textsc{Nil}$，$r \gets T.root$
+        %    \While{$r \neq \textsc{Nil}$}
+        %    \State $y \gets r$
+        %    \If{$x < r.key$}
+        %    \State $r \gets r.left$
+        %    \Else
+        %    \State $r \gets r.right$
+        %    \EndIf
+        %    \EndWhile
+        %    \State \Return $z$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+
+%--
+%\begin{procedure}[ht]
+%    
+%    %\caption{\textsc{Relax($u\rightarrow v$)} \label{A:Relax} }
+%    
+%    \TitleOfAlgo{\textsc{Relax($u\rightarrow v$)}}
+%    
+%   
+%    
+%\end{procedure}
+
+
+%--
+%\begin{algorithm}[ht]
+%    
+%    \caption{\textsc{FordSSSP($s$)} \label{A:Ford} }
+%    
+%    \textsc{InitSSSP($s$)} \;
+%    
+%    \While{there is at least one \textnormal{\texttt{tense}} edge}{
+%        \textsc{Relax} any \texttt{tense} edge \;
+%    }
+%    
+%\end{algorithm}
+
+
+
+
+
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{FordSSSP}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State \Call{InitSSSP}{$s$}
+        \While{there is at least one \textnormal{\texttt{tense}} edge}
+            \State \alg{Relax} any \textnormal{\texttt{tense}} edge
+        \EndWhile
+%        \State \Call{Insert}{$T,x$}
+%        %--        
+%        \ForAll{vertices $v$}
+%       unmark $v$ \Comment{遍历之前，初始化每个点}
+%       \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+
+\subsection{Ford框架视角下的Dijkstra算法}
+
+每个节点的状态都是从Fresh$\rightarrow$ Fringe$\rightarrow$Finished（本质就是BFS中的
+    \texttt{white}$\rightarrow$\texttt{gray}$\rightarrow$\texttt{black}）。
+在\alg{Ford}框架的视角下，这三种状态的含义是：
+%--
+\begin{itemize}
+    \item Fresh：从未被\alg{Relax}。
+    \item Fringe：已经被\alg{Relax}过，还可能再次（多次）\alg{Relax}。
+    \item Finished：已经完成\alg{Relax}，再也不需要，也不可能被\alg{Relax}。
+\end{itemize}
+
+
+
+
+\section{从Ford到Bellman-Ford}
+
+
+\subsection{Pre版本：细化边的遍历}
+
+\textsc{Bellman-Ford}算法就是对\textsc{Ford}框架的精化，它本质上也是一种蛮力算法，只不过对遍历和 \textsc{Relax} 每一条紧的边的过程，做了更细致的设计。
+
+第一个抽象版本的\textsc{Bellman-Ford}算法（算法\ref{A:Bellman-Ford-Pre}）中，有两个要素。
+一个是对于紧的边的遍历，它明确设计成遍历图中的每一条边。至于具体如何遍历图中的边，是否要做各种优化，当前阶段的算法设计中尚未涉及。
+
+另一个要素是对于寻找紧的边的过程如何终止，它被设计成一个简单但是有点“含糊”的 while循环。
+
+下面，我们首先就要细化、明确这个含糊的while循环。
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFordPre}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State \Call{InitSSSP}{$s$}
+        \While{there is at least one \text{\texttt{tense}} edge}
+            \For{every edge $u\rightarrow v$}
+                \If{$u\rightarrow v$ is \texttt{tense}}
+                    \State \Call{Relax}{$u\rightarrow v$}
+                \EndIf
+            \EndFor
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Pre2版本：明确\alg{Relax}的轮次}
+
+在Pre2版本中（算法\ref{A:Bellman-Ford-Pre2}），含糊的、不知道多少轮的while循环，被替换成了明确的$n-1$次循环。
+循环的轮次被清晰定为$n-1$轮的道理在于，逐渐\textsc{Relax}的过程，就是小的路径，逐渐长成大的路径的过程，而最短路径至多有$n-1$跳，所以循环至多要$n-1$轮。
+上述论述只能说原则上是正确的，有一些细节需要补充，详细的证明过程可以参考\cite{Erickson19}。
+
+后续我们将引入“显式”（explicit）的递归刻画。基于这一详细的递归刻画，大家也可以严格地论证上述$n-1$轮迭代的正确性。
+
+在本轮细化过程中，我们还显式地处理了\ul{负环}的问题。如果没有负环，则SSSP问题被解决，则没有紧的边。做逆否命题的等价变换，我们有：如果还有紧的边，则有负环。
+负环问题的处理，我们在后续算法中不再专门写出来。有需要随时“插拔”即可。此外，处理负环的过程中，如何遍历所有的边，可以采用不同的实现方式。
+
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFordPre2}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State \Call{InitSSSP}{$s$}
+        \For{$i=1 \textbf{ to } n-1$}
+            \For{every edge $u\rightarrow v$}
+                \If{$uv$ is \texttt{tense}}
+                    \State \Call{Relax}{$u\rightarrow v$}
+                \EndIf
+            \EndFor
+        \EndFor
+        %--
+        \For{every edge $u\rightarrow v$}
+            \If{$u\rightarrow v$ is \texttt{tense}}
+                \State \Return ``\,\texttt{negative cycle}"
+            \EndIf
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+
+\section{用DP细化Bellman-Ford算法的设计}
+
+\subsection{从$dist(v)$到$dist_{\leq i}(v)$}
+
+路径天然地具有“小路径逐步长大”的结构，所以围绕递归来设计最短路径算法，是一种非常直觉的选择。
+我们很直觉地可以想到下面的递归：
+%--
+\begin{align}
+    dist(v) = \begin{cases}
+        0 & \text{if } v=s \\
+        \min\limits_{u\rightarrow v} (dist(u) + w(u\rightarrow v)) & \text{otherwise}
+    \end{cases} 
+\end{align}
+
+\noindent 但是这一递归却并不可行。因为如果$u$、$v$在一个环中的话，要求$dist(v)$，我们必须先知道$dist(u)$；而要求$dist(u)$，必须先知道$dist(v)$。这不是一个良定义的递归。
+
+上述思路是可行的，只不过我们对于路径的刻画过于粗疏，使得相应的递归设计未能奏效。
+我们可以通过细化对于路径的刻画，进而得出更精细的、正确的递归设计。
+刻画路径的关键在于对于路径的大小（路径中边的条数）的界定。我们定义$dist_{\leq i}(v)$为：在仅考虑不超过$i$条边的路径的前提下，$s$到$v$的最短路径的长度。由此，我们可以用细化后的$dist_{\leq i}(v)$函数来刻画最短路径所满足的递归式：
+
+%--
+\begin{align}
+    dist_{\leq i}(v) = \begin{cases}
+        0 & \text{if }  i=0 \text{ and } v=s\\
+        \infty & \text{if }  i=0 \text{ and } v\neq s\\
+        \min \left\lbrace 
+        \begin{gathered}
+            dist_{\leq i-1} (v) \\
+            \min_{u\rightarrow v} (dist_{\leq i-1}(u) + w(u\rightarrow v))
+        \end{gathered}    
+        \right\rbrace &\text{otherwise}
+    \end{cases}
+\end{align}
+
+
+注意，上述思路利用了最短路径的一条非常重要的性质：更大的\ul{最短路径}，一定是由更小的\ul{最短路径}“拼接”而成的。
+也就是说，大问题的最优解，一定是小问题的最优解组装而成。
+这一性质并不是天然成立的。很多优化问题，我们可以用小问题的“次优解”，组装出大问题的最优解。
+
+最短路径问题以及更一般的优化问题的这一性质，我们将在对动态规划策略做回顾总结和深度反思的时候，做专门讨论。
+
+
+
+
+\subsection{动态规划版的Bellman-Ford算法}
+
+
+根据$dist_{\leq i}(v)$所满足的递归式，我们可以得出用动态规划策略设计的\textsc{Bellman-Ford}算法，如算法\ref{A:Bellman-Ford-DP}所示。
+
+
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFordDP}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State $dist[0, s] := 0$
+        \For{every vertex $v\neq s$}
+            \State $dist[0, v] := \infty$
+        \EndFor
+        % 
+        \For{$i= 1 \textbf{ to } n-1 $}
+            \For{every vertex $v$}
+                \State $dist[i,v] := dist[i-1, v]$
+                \For{every edge $u\rightarrow v$}
+                    \If{$dist[i,v] > dist[i-1, u] + w(u\rightarrow v)$}
+                        \State $dist[i,v] := dist[i-1, u] + w(u\rightarrow v)$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{两个细节的改进}
+
+最短路径权值$dist_{\leq i}(v)$的初始化，可以和边的\alg{Relax}分离开来，如算法\ref{A:Bellman-Ford-DP2}所示。
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFordDP2}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State $dist[0, s] := 0$
+        \For{every vertex $v\neq s$}
+        \State $dist[0, v] := \infty$
+        \EndFor
+        % 
+        \For{$i= 1 \textbf{ to } n-1 $}
+            \For{every vertex $v$}
+                \State $dist[i,v] := dist[i-1, v]$
+            \EndFor        
+            \For{every edge $u\rightarrow v$}
+                \If{$dist[i,v] > dist[i-1, u] + w(u\rightarrow v)$}
+                    \State $dist[i,v] := dist[i-1, u] + w(u\rightarrow v)$
+                \EndIf
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+提前访问到了更新后的$dist_{\leq i}(v)$值，至少不会有坏处，如算法\ref{A:Bellman-Ford-DP3}所示。
+
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFordDP3}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State $dist[0, s] := 0$
+        \For{every vertex $v\neq s$}
+            \State $dist[0, v] := \infty$
+        \EndFor
+        % 
+        \For{$i= 1 \textbf{ to } n-1 $}
+            \For{every vertex $v$}
+                \State $dist[i,v] := dist[i-1, v]$
+            \EndFor        
+            \For{every edge $u\rightarrow v$}
+                \If{$dist[i,v] > dist[\textcolor{red}{i}, u] + w(u\rightarrow v)$}
+                    \State $dist[i,v] := dist[\textcolor{red}{i}, u] + w(u\rightarrow v)$ \Comment{两处$i-1$均改成了$i$}
+                \EndIf
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+
+%--
+%\begin{algorithm}[ht]
+%    
+%    \caption{\textsc{BellmanFordDP3($s$)} \label{A:Bellman-Ford-DP3} }
+%    
+%    $dist[0,s] := 0$ \;
+%    \For{every vertex $v\neq s$}{
+%        $dist[0,v] := \infty$ \;
+%    } % for 
+%    
+%    \For{$i = 1 \text{ \bf to } n-1$}{
+%        \For{every vertex $v$}{
+%            $dist[i,v] := dist[i-1, v]$ \;
+%        } % for v
+%        \For{every edge $u\rightarrow v$}{
+%            \If{$dist[i,v] > dist[\textcolor{red}{i}, u] + w(u\rightarrow v)$}{
+%                $dist[i,v] := dist[\textcolor{red}{i}, u] + w(u\rightarrow v)$ \tcc*[r]{{\rm 两处$i\textendash 1$均改成了$i$}}
+%            } % fi
+%        } % for uv
+%    } % for i
+%    
+%    
+%\end{algorithm}
+
+
+
+
+
+
+
+\subsection{原地的Bellman-Ford算法}
+
+上述改进主要是让最后的“原地”（in-place）化改造变得更直观。
+
+我们无需再维护$n-1$个矩阵，每个矩阵对应循环中的一个轮次。
+所有轮次直接在同一个矩阵上原地不断更新即可。
+
+最终得到的Bellman-Ford算法，如算法\ref{A:Bellman-Ford-Final}所示。
+
+
+%--
+\begin{algorithm}[htbp]
+    \caption{\alg{BellmanFord}($s$)}
+    \label{}
+    \begin{algorithmic}[1]
+        \State $dist[s] := 0$
+        \For{every vertex $v\neq s$}
+            \State $dist[v] := \infty$
+        \EndFor
+        % 
+        \For{$i= 1 \textbf{ to } n-1 $}
+            \For{every edge $u\rightarrow v$}
+                \If{$dist[v] > dist[u] + w(u\rightarrow v)$}
+                    \State $dist[v] := dist[u] + w(u\rightarrow v)$
+                \EndIf
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+%--
+%\begin{algorithm}[ht]
+%    
+%    \caption{\textsc{BellmanFordFinal($s$)} \label{A:Bellman-Ford-Final} }
+%    
+%    $dist[s] := 0$ \;
+%    \For{every vertex $v\neq s$}{
+%        $dist[v] := \infty$ \;
+%    } % for 
+%    
+%    \For{$i = 1 \text{ \bf to } n-1$}{
+%        \For{every edge $u\rightarrow v$}{
+%            \If{$dist[v] > dist[u] + w(u\rightarrow v)$}{
+%                $dist[v] := dist[u] + w(u\rightarrow v)$ \;
+%            } % fi
+%        } % for uv
+%    } % for i
+%    
+%\end{algorithm}
+
