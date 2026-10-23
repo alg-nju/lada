@@ -1,5 +1,5 @@
 %--
-\chapter{图遍历 (L10)}
+\chapter{图遍历概要 (L10)}
 
 
 %----------------------------------------
@@ -8,40 +8,40 @@
 \nid 图算法总览（\S\ref{sec:graph-overview}）：
 %--
 \begin{itemize}
-    \item 图算法问题：从\ul{遍历}到\ul{优化}；
-    \item 图算法策略：从\ul{贪心}到\ul{动态规划}。
+    \item 图算法问题：从\ul{遍历}到\ul{优化}
+    \item 图算法策略：从\ul{贪心}到\ul{动态规划}
 \end{itemize}
 
 \nid 框架的基本概念：
 %--
 \begin{itemize}
-    \item 共性内容的固化；
-    \item 具体内容的细化：参数化、定制化。
+    \item 共性内容的固化
+    \item 具体内容的细化：定制化、参数化
 \end{itemize}
 
 
 \nid 精化（层层细化）观点下的图遍历：
 %--
 \begin{itemize}
-    \item 不变式的概念（回顾）、精化的概念；
-    \item 抽象的WFS框架（\S \ref{sec:wfs}）；
-    \item WFS $\Rightarrow$ DFS、BFS、\alg{BestFS}。
+    \item 不变式的概念（回顾）、精化的概念
+    \item 抽象的WFS框架（\S \ref{sec:wfs}）
+    \item WFS $\Rightarrow$ DFS、BFS、\alg{BestFS}
 \end{itemize}
 
 
 \nid DFS框架基础：
 %--
 \begin{itemize}
-    \item 抽象DFS框架；
-    \item 嵌入application-specific处理的3组（共5个）时机。
+    \item 抽象DFS框架
+    \item 嵌入application-specific处理的3组（共5个）时机
 \end{itemize}
 
 \nid DFS框架的增强：
 %--
 \begin{itemize}
-    \item 点着色：W $\Rightarrow$ G $\Rightarrow$ B；
-    \item 边着色：TE、BE、DE、CE；
-    \item 时间的引入：\textsc{StartTime}、\textsc{FinishTime}、\textsc{ActiveInterval}。
+    \item 点着色：\texttt{white} $\Rightarrow$ \texttt{gray} $\Rightarrow$ \texttt{black}
+    \item 边着色：\texttt{TE}、\texttt{BE}、\texttt{DE}、\texttt{CE}
+    \item 时间的引入：\texttt{start-time}、\texttt{finish-time}、\texttt{active-interval}
 \end{itemize}
 
 %----------------------------------------
