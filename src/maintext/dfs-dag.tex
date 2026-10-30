@@ -1,0 +1,46 @@
+%--
+\chapter{DAG图上的DFS (L11)}
+
+%----------------------------------------
+\section*{授课提纲}
+
+\nid 基本概念：
+%--
+\begin{itemize}
+    \item DAG图的基本概念
+    \item 拓扑排序（Topolotical Order）的基本概念
+    \item DAG、TO的偏序集理论解读
+\end{itemize}
+
+\nid DAG $\Leftrightarrow$ TO：
+%--
+\begin{itemize}
+    \item TO $\Rightarrow$ DAG
+    \item DAG $\Rightarrow$ TO：DFS实现TO
+\end{itemize}
+
+\nid 任务调度问题：
+%--
+\begin{itemize}
+    \item 简单任务调度：TO
+    \item Critical path问题：DFS
+\end{itemize}
+
+\nid SCC基本概念：
+%--
+\begin{itemize}
+    \item 图的连通性 $\Rightarrow$ 有向图的强连通性 $\Rightarrow$ SCC的概念
+    \item 每个有向图的内核都是一个DAG图：condensation graph的概念
+\end{itemize}
+
+\nid SCC算法：
+%--
+\begin{itemize}
+    \item 算法设计
+    \item 算法正确性论证：
+    \begin{itemize}
+        \item End case、White case、Black case
+        \item 起始点的选择：不影响关键的出入栈顺序
+    \end{itemize}
+\end{itemize}
+
