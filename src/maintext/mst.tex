@@ -1,0 +1,41 @@
+%--
+\chapter{最小生成树}
+
+%----------------------------------------
+\section*{授课提纲}
+
+\nid MST的定义：
+%--
+\begin{itemize}
+    \item 更贴近人的定义 vs. 更贴近机器的定义（MST Property）
+    \item 二者等价性的证明
+\end{itemize}
+
+\nid \alg{Prim}算法的设计与实现：
+%--
+\begin{itemize}
+    \item \alg{Prim}算法设计 $\Rightarrow$ \alg{Prim}算法正确性证明（基于MST Property）
+    \item \alg{Prim}算法实现（基于PQ）$\Rightarrow$ \alg{Prim}算法代价分析（基于抽象PQ的抽象代价分析）
+\end{itemize}
+
+\nid \alg{Kruskal}算法的设计与实现：
+%--
+\begin{itemize}
+    \item \alg{Kruskal}算法设计 $\Rightarrow$ \alg{Kruskal}算法正确性证明
+    \item \alg{Kruskal}算法实现 $\Rightarrow$ \alg{Kruskal}算法代价分析（基于抽象并查集的代价分析）
+\end{itemize}
+
+\nid \alg{Prim} vs. \alg{Kruskal}：
+%--
+\begin{itemize}
+    \item 实例化抽象数据类型的实现
+    \item 按$n$和$m$的关系，分情况讨论
+\end{itemize}
+
+\nid \alg{BestFS}：
+%--
+\begin{itemize}
+    \item 实例化为\alg{Prim}
+    \item 实例化为\alg{Dijkstra}
+\end{itemize}
+
