@@ -1,5 +1,5 @@
 %--
-\chapter{给定源点的最短路径}
+\chapter{给定源点的最短路径 (L15)}
 
 %----------------------------------------
 \section*{授课提纲}
@@ -21,6 +21,21 @@
     \item 负权图：\textsc{Bellman-Ford}（能检测负环）（\S \ref{sec:bellman-ford}）。
 \end{itemize}
 
+\nid \alg{Dijkstra}：
+%--
+\begin{itemize}
+    \item 设计：源于\alg{BestFS}框架
+    \item 正确性：归纳法
+    \item 泛化：路由问题、pipe问题、电动车问题
+\end{itemize}
+
+
+\nid \alg{Bellman-Ford}：
+\begin{itemize}
+    \item 设计：“七步诗”法
+    \item 正确性：穷举、递归
+    \item 代价：直接分析；子问题调度图（DAG图）分析
+\end{itemize}
 
 
 %----------------------------------------
@@ -58,7 +73,7 @@
     因为此时有向图上的算法，稍加改动即可用于无向图。
 
 %----------------------------------------
-\section{Bellman-Ford算法} \label{sec:bellman-ford}
+\section{Ford框架} \label{sec:bellman-ford}
 
 %--------------------
 \subsection{Ford的generic框架}
@@ -191,11 +206,11 @@
     \end{algorithmic}
 \end{algorithm}
 
-%----------------------------------------
-\section{用动态规划细化Bellman-Ford算法的设计}
-
 %--------------------
-\subsection{从$dist(v)$到$dist_{\leq i}(v)$}
+\subsection{用动态规划细化Bellman-Ford算法的设计}
+
+%----------
+\subsubsection{从$dist(v)$到$dist_{\leq i}(v)$}
 
 路径天然地具有“小路径逐步长大”的结构，所以围绕递归来设计最短路径算法，是一种非常直觉的选择。
 我们很直觉地可以想到下面的递归：
@@ -233,8 +248,8 @@
 
 最短路径问题以及更一般的优化问题的这一性质，我们将在对动态规划策略做回顾总结和深度反思的时候，做专门讨论。
 
-%--------------------
-\subsection{动态规划版的Bellman-Ford算法}
+%----------
+\subsubsection{动态规划版的Bellman-Ford算法}
 
 根据$dist_{\leq i}(v)$所满足的递归式，我们可以得出用动态规划策略设计的\textsc{Bellman-Ford}算法，如算法\ref{alg:bellman-ford-dp}所示。
 
@@ -263,8 +278,8 @@
 
 
 
-%--------------------
-\subsection{两个细节的改进}
+%----------
+\subsubsection{两个细节的改进}
 
 最短路径权值$dist_{\leq i}(v)$的初始化，可以和边的\alg{Relax}分离开来，如算法\ref{alg:bellman-ford-dp2}所示。
 
@@ -316,14 +331,14 @@
 \end{algorithm}
 
 %--------------------
-\subsection{原地的Bellman-Ford算法}
+\subsection{最终版原地的Bellman-Ford算法}
 
 上述改进主要是让最后的“原地”（in-place）化改造变得更直观。
 
 我们无需再维护$n-1$个矩阵，每个矩阵对应循环中的一个轮次。
 所有轮次直接在同一个矩阵上原地不断更新即可。
 
-最终得到的Bellman-Ford算法，如算法\ref{alg:bellman-ford-final}所示。
+最终得到的\alg{Bellman-Ford}算法，如算法\ref{alg:bellman-ford-final}所示。
 
 %--
 \begin{algorithm}[htbp]
